@@ -1,5 +1,3 @@
-require_relative './vagrant/key_authorization'
-
 Vagrant.configure('2') do |config|
   
   config.hostmanager.enabled = true
