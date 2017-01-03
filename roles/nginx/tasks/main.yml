@@ -16,10 +16,6 @@
   shell: ls -1 /etc/nginx/sites-enabled/
   register: active
 
-- name: Display active sites
-  debug:
-    var: active.stdout_lines
-
 - name: deactivate sites
   file: path=/etc/nginx/sites-enabled/{{ item }} state=absent
   with_items: "{{ active.stdout_lines }}"
