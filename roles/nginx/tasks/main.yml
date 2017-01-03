@@ -12,8 +12,18 @@
   with_dict: "{{ sites }}"
   notify: restart nginx
 
-- name: deactivate nginx default page
-  file: path=/etc/nginx/sites-enabled/default state=absent
+- name: get active sites
+  shell: ls -1 /etc/nginx/sites-enabled/
+  register: active
+
+- name: Display active sites
+  debug:
+    var: active.stdout_lines
+
+- name: deactivate sites
+  file: path=/etc/nginx/sites-enabled/{{ item }} state=absent
+  with_items: "{{ active.stdout_lines }}"
+  when: item not in sites
   notify: restart nginx
 
 - name: activate nginx site
